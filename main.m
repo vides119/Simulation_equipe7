@@ -265,6 +265,8 @@ classdef main < matlab.apps.AppBase
                                        sorted_rows(k, 1) sorted_rows(k, 2);
                                        sorted_rows(k, 1) sorted_rows(k, 2)];
             end
+
+            assignin("base", "asserv_t3", app.Asserviravecprdictiont3CheckBox.Value);
             assignin("base", "cmd", cmd);
             assignin("base", "consigne", [25 25]);
         end
@@ -503,14 +505,15 @@ classdef main < matlab.apps.AppBase
             data = readmatrix([location file]);
             n = round(0.5/(data(2, 1)-data(1, 1)));
             t = downsample(data(:, 1), n);
-            t1 = downsample(data(:, 2), n);
-            P = ones(length(t1), 1);
+            P_cmd = downsample(data(:, 2), n);
+            P_pert = downsample(data(:, 3), n);
+            t1 = downsample(data(:, 4), n);
             t1 = t1-t1(1);
-            t2 = downsample(data(:, 3), n);
+            t2 = downsample(data(:, 5), n);
             t2 = t2-t2(1);
-            t3 = downsample(data(:, 4), n);
+            t3 = downsample(data(:, 6), n);
             t3 = t3-t3(1);
-            [K1, tau1, R1, sys1] = ident_tf(app, t, P, t1);
+            [K1, tau1, R1, sys1] = ident_tf(app, t, P_cmd, t1);
             [K12, tau12, R12, sys12] = ident_tf(app, t, t1, t2);
             [K23, tau23, R23, sys23] = ident_tf(app, t, t2, t3);
 
@@ -526,9 +529,9 @@ classdef main < matlab.apps.AppBase
 
             figure;
             hold on;
-            plot(t, P, "k");
+            plot(t, P_cmd, "k");
             plot(t, t1, "-r");
-            t1_fit = lsim(sys1, P, t);
+            t1_fit = lsim(sys1, P_cmd, t);
             plot(t, t1_fit, ":r");
             plot(t, t2, "-b");
             t2_fit = lsim(sys12, t1, t);
@@ -551,13 +554,14 @@ classdef main < matlab.apps.AppBase
             data = readmatrix([location file]);
             n = round(0.5/(data(2, 1)-data(1, 1)));
             t = downsample(data(:, 1), n);
-            t1 = downsample(data(:, 2), n);
-            P = ones(length(t1), 1);
+            P_cmd = downsample(data(:, 2), n);
+            P_pert = downsample(data(:, 3), n);
+            t1 = downsample(data(:, 4), n);
             t1 = t1-t1(1);
-            t2 = downsample(data(:, 3), n);
+            t2 = downsample(data(:, 5), n);
             t2 = t2-t2(1);
-            [Kp1, taup1, Rp1, sysp1] = ident_tf(app, t, P, t1);
-            [Kp2, taup2, Rp2, sysp2] = ident_tf(app, t, P, t2);
+            [Kp1, taup1, Rp1, sysp1] = ident_tf(app, t, P_pert, t1);
+            [Kp2, taup2, Rp2, sysp2] = ident_tf(app, t, P_pert, t2);
 
             app.GainDCEditField_9.Value = Kp1;
             app.TausEditField_9.Value = taup1;
@@ -568,12 +572,12 @@ classdef main < matlab.apps.AppBase
 
             figure;
             hold on;
-            plot(t, P, "k");
+            plot(t, P_pert, "k");
             plot(t, t1, "-r");
-            t1_fit = lsim(sysp1, P, t);
+            t1_fit = lsim(sysp1, P_pert, t);
             plot(t, t1_fit, ":r");
             plot(t, t2, "-b");
-            t2_fit = lsim(sysp2, P, t);
+            t2_fit = lsim(sysp2, P_pert, t);
             plot(t, t2_fit, ":b");
             title("Identification des fonctions de transfert de la propagation de la perturbation");
             legend("Puissance", "t1 données", "t1 estimation", "t2 données", "t2 estimation", "t3 données", "t3 estimation");
