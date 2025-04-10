@@ -140,6 +140,13 @@ classdef main < matlab.apps.AppBase
         LesparamtresdurgulateurConcernentseulementlemodeconsigneLabel_4  matlab.ui.control.Label
         GainslectroniqueTab             matlab.ui.container.Tab
         GridLayout2_3                   matlab.ui.container.GridLayout
+        GridLayout3_5                   matlab.ui.container.GridLayout
+        TaufiltreT3EditField            matlab.ui.control.NumericEditField
+        TaufiltreT3EditFieldLabel       matlab.ui.control.Label
+        TaufiltreT2EditField            matlab.ui.control.NumericEditField
+        TaufiltreT2EditFieldLabel       matlab.ui.control.Label
+        TaufiltreT1EditField            matlab.ui.control.NumericEditField
+        TaufiltreT1EditFieldLabel       matlab.ui.control.Label
         GridLayout3_4                   matlab.ui.container.GridLayout
         GainampliT3EditField            matlab.ui.control.NumericEditField
         GainampliT3EditFieldLabel       matlab.ui.control.Label
@@ -198,10 +205,10 @@ classdef main < matlab.apps.AppBase
             assignin("base", "sample_time", app.PriodechantillonnagesEditField.Value);
             assignin("base", "T_ambiant", app.TempratureambiantedegCEditField.Value);
 
-            assignin("base", "Gain_controleur", app.GainglobalcontrleurEditField.Value);
-            assignin("base", "P", app.GainproportionnelEditField.Value);
-            assignin("base", "I", app.GainintgraleEditField.Value);
-            assignin("base", "D", app.GaindriveEditField.Value);
+            Gain_controleur = app.GainglobalcontrleurEditField.Value;
+            assignin("base", "P", Gain_controleur*app.GainproportionnelEditField.Value);
+            assignin("base", "I", Gain_controleur*app.GainintgraleEditField.Value);
+            assignin("base", "D", Gain_controleur*app.GaindriveEditField.Value);
             assignin("base", "N", app.FrquencecoupureradsEditField.Value);
 
             assignin("base", "K1", app.GainDCEditField_6.Value);
@@ -231,6 +238,9 @@ classdef main < matlab.apps.AppBase
             assignin("base", "gain_t3", app.GainampliT3EditField.Value);
             assignin("base", "offset_cmd", app.OffsetamplicommandeEditField.Value);
             assignin("base", "gain_cmd", app.GainamplicommandeEditField.Value);
+            assignin("base", "tau_f1", app.TaufiltreT1EditField.Value);
+            assignin("base", "tau_f2", app.TaufiltreT2EditField.Value);
+            assignin("base", "tau_f3", app.TaufiltreT3EditField.Value);
 
             assignin("base", "cA", app.AEditField.Value);
             assignin("base", "cB", app.BEditField.Value);
@@ -377,6 +387,8 @@ classdef main < matlab.apps.AppBase
         function Init(app)
             app.UITable.Data = [0, 24];
             app.UITable_2.Data = [0, 0];
+            msgbox(["Bonjour! Bienvenue dans l'interface de la simulation d'asservissement"; ...
+                    "Pour de l'aide avec les paramètres/boutons, faites flotter la souris au dessus de l'élément."]);
         end
 
         % Button pushed function: DmarrerButton
@@ -385,7 +397,7 @@ classdef main < matlab.apps.AppBase
            load_sim_params(app);
            load_cmd_params(app);
            assignin("base", "mode", 1)
-           out = sim("Simulink_R2023b_serie.slx", "StopTime", num2str(app.DuresEditField.Value));
+           out = sim("Asservissement_2023a.slx", "StopTime", num2str(app.DuresEditField.Value));
 
            signals = get_chosen_signals(app);
           
@@ -404,7 +416,7 @@ classdef main < matlab.apps.AppBase
            load_sim_params(app);
            load_consigne_params(app);
            assignin("base", "mode", 0)
-           out = sim("Simulink_R2023b_serie.slx", "StopTime", num2str(app.DuresEditField_2.Value));
+           out = sim("Asservissement_2023a.slx", "StopTime", num2str(app.DuresEditField_2.Value));
 
            signals = get_chosen_signals(app);
           
@@ -432,7 +444,7 @@ classdef main < matlab.apps.AppBase
         function save_params(app, event)
             [file, location, indx] = uiputfile("params.json");
             load_sim_params(app);
-            vars = ["sample_time", "T_ambiant", "Gain_controleur", "P", "I", "D", "N", "K1", "tau1", "R1", "K12", "tau12", "R12", "K23", "tau23", "R23", "Kp1", "taup1", "Rp1", "Kp2", "taup2", "Rp2", "bits_ADC", "bits_DAC", "offset_t1", "offset_t2", "offset_t3", "gain_t1", "gain_t2", "gain_t3", "offset_cmd", "gain_cmd", "cA", "cB", "cC", "cD", "ca", "cb", "cc", "cd"];
+            vars = ["sample_time", "T_ambiant", "Gain_controleur", "P", "I", "D", "N", "K1", "tau1", "R1", "K12", "tau12", "R12", "K23", "tau23", "R23", "Kp1", "taup1", "Rp1", "Kp2", "taup2", "Rp2", "bits_ADC", "bits_DAC", "offset_t1", "offset_t2", "offset_t3", "gain_t1", "gain_t2", "gain_t3", "offset_cmd", "gain_cmd", "cA", "cB", "cC", "cD", "ca", "cb", "cc", "cd", "tau_f1", "tau_f2", "tau_f3"];
             saveVarsToJSON(app, vars, file);
         end
 
@@ -472,6 +484,9 @@ classdef main < matlab.apps.AppBase
             app.GainampliT3EditField.Value = evalin("base", "gain_t3");
             app.OffsetamplicommandeEditField.Value = evalin("base", "offset_cmd");
             app.GainamplicommandeEditField.Value = evalin("base", "gain_cmd");
+            app.TaufiltreT1EditField.Value = evalin("base", "tau_f1");
+            app.TaufiltreT2EditField.Value = evalin("base", "tau_f2");
+            app.TaufiltreT3EditField.Value = evalin("base", "tau_f3");
             app.AEditField.Value = evalin("base", "cA");
             app.BEditField.Value = evalin("base", "cB");
             app.CEditField.Value = evalin("base", "cC");
@@ -499,15 +514,15 @@ classdef main < matlab.apps.AppBase
             [K12, tau12, R12, sys12] = ident_tf(app, t, t1, t2);
             [K23, tau23, R23, sys23] = ident_tf(app, t, t2, t3);
 
-            app.GainDCEditField_6.Value = evalin("base", "K1");
-            app.TausEditField_6.Value = evalin("base", "tau1");
-            app.RetardEditField.Value = evalin("base", "R1");
-            app.GainDCEditField_7.Value = evalin("base", "K12");
-            app.TausEditField_7.Value = evalin("base", "tau12");
-            app.RetardEditField_2.Value = evalin("base", "R12");
-            app.GainDCEditField_8.Value = evalin("base", "K23");
-            app.TausEditField_8.Value = evalin("base", "tau23");
-            app.RetardEditField_3.Value = evalin("base", "R23");
+            app.GainDCEditField_6.Value = K1;
+            app.TausEditField_6.Value = tau1;
+            app.RetardEditField.Value = R1;
+            app.GainDCEditField_7.Value = K12;
+            app.TausEditField_7.Value = tau12;
+            app.RetardEditField_2.Value = R12;
+            app.GainDCEditField_8.Value = K23;
+            app.TausEditField_8.Value = tau23;
+            app.RetardEditField_3.Value = R23;
 
             figure;
             hold on;
@@ -544,12 +559,12 @@ classdef main < matlab.apps.AppBase
             [Kp1, taup1, Rp1, sysp1] = ident_tf(app, t, P, t1);
             [Kp2, taup2, Rp2, sysp2] = ident_tf(app, t, P, t2);
 
-            app.GainDCEditField_9.Value = evalin("base", "Kp1");
-            app.TausEditField_9.Value = evalin("base", "taup1");
-            app.RetardEditField_4.Value = evalin("base", "Rp1");
-            app.GainDCEditField_10.Value = evalin("base", "Kp2");
-            app.TausEditField_10.Value = evalin("base", "taup2");
-            app.RetardEditField_5.Value = evalin("base", "Rp2");
+            app.GainDCEditField_9.Value = Kp1;
+            app.TausEditField_9.Value = taup1;
+            app.RetardEditField_4.Value = Rp1;
+            app.GainDCEditField_10.Value = Kp2;
+            app.TausEditField_10.Value = taup2;
+            app.RetardEditField_5.Value = Rp2;
 
             figure;
             hold on;
@@ -611,7 +626,7 @@ classdef main < matlab.apps.AppBase
             % Create GridLayout
             app.GridLayout = uigridlayout(app.UIFigure);
             app.GridLayout.ColumnWidth = {'1x'};
-            app.GridLayout.RowHeight = {'1x', '1x', '2x'};
+            app.GridLayout.RowHeight = {'1.5x', '1x', '2x'};
 
             % Create UIAxes
             app.UIAxes = uiaxes(app.GridLayout);
@@ -630,6 +645,7 @@ classdef main < matlab.apps.AppBase
 
             % Create GnralTab
             app.GnralTab = uitab(app.TabGroup);
+            app.GnralTab.Tooltip = {''};
             app.GnralTab.Title = 'Général';
 
             % Create GridLayout2
@@ -1043,7 +1059,7 @@ classdef main < matlab.apps.AppBase
 
             % Create GridLayout2_3
             app.GridLayout2_3 = uigridlayout(app.GainslectroniqueTab);
-            app.GridLayout2_3.ColumnWidth = {'1x', 'fit', 'fit'};
+            app.GridLayout2_3.ColumnWidth = {'1x', '1x', '1.5x', '1x'};
             app.GridLayout2_3.RowHeight = {'1x'};
 
             % Create GridLayout3_3
@@ -1197,6 +1213,52 @@ classdef main < matlab.apps.AppBase
             app.GainampliT3EditField.Layout.Column = 2;
             app.GainampliT3EditField.Value = 6.25;
 
+            % Create GridLayout3_5
+            app.GridLayout3_5 = uigridlayout(app.GridLayout2_3);
+            app.GridLayout3_5.ColumnWidth = {'2x', '1x'};
+            app.GridLayout3_5.RowHeight = {'fit', 'fit', 'fit'};
+            app.GridLayout3_5.Layout.Row = 1;
+            app.GridLayout3_5.Layout.Column = 4;
+
+            % Create TaufiltreT1EditFieldLabel
+            app.TaufiltreT1EditFieldLabel = uilabel(app.GridLayout3_5);
+            app.TaufiltreT1EditFieldLabel.HorizontalAlignment = 'right';
+            app.TaufiltreT1EditFieldLabel.Layout.Row = 1;
+            app.TaufiltreT1EditFieldLabel.Layout.Column = 1;
+            app.TaufiltreT1EditFieldLabel.Text = 'Tau filtre T1';
+
+            % Create TaufiltreT1EditField
+            app.TaufiltreT1EditField = uieditfield(app.GridLayout3_5, 'numeric');
+            app.TaufiltreT1EditField.Tooltip = {'Constante de temps du filtre anti-aliasing de T1'};
+            app.TaufiltreT1EditField.Layout.Row = 1;
+            app.TaufiltreT1EditField.Layout.Column = 2;
+
+            % Create TaufiltreT2EditFieldLabel
+            app.TaufiltreT2EditFieldLabel = uilabel(app.GridLayout3_5);
+            app.TaufiltreT2EditFieldLabel.HorizontalAlignment = 'right';
+            app.TaufiltreT2EditFieldLabel.Layout.Row = 2;
+            app.TaufiltreT2EditFieldLabel.Layout.Column = 1;
+            app.TaufiltreT2EditFieldLabel.Text = 'Tau filtre T2';
+
+            % Create TaufiltreT2EditField
+            app.TaufiltreT2EditField = uieditfield(app.GridLayout3_5, 'numeric');
+            app.TaufiltreT2EditField.Tooltip = {'Constante de temps du filtre anti-aliasing de T2'};
+            app.TaufiltreT2EditField.Layout.Row = 2;
+            app.TaufiltreT2EditField.Layout.Column = 2;
+
+            % Create TaufiltreT3EditFieldLabel
+            app.TaufiltreT3EditFieldLabel = uilabel(app.GridLayout3_5);
+            app.TaufiltreT3EditFieldLabel.HorizontalAlignment = 'right';
+            app.TaufiltreT3EditFieldLabel.Layout.Row = 3;
+            app.TaufiltreT3EditFieldLabel.Layout.Column = 1;
+            app.TaufiltreT3EditFieldLabel.Text = 'Tau filtre T3';
+
+            % Create TaufiltreT3EditField
+            app.TaufiltreT3EditField = uieditfield(app.GridLayout3_5, 'numeric');
+            app.TaufiltreT3EditField.Tooltip = {'Constante de temps du filtre anti-aliasing de T3'};
+            app.TaufiltreT3EditField.Layout.Row = 3;
+            app.TaufiltreT3EditField.Layout.Column = 2;
+
             % Create ThermistancesTab
             app.ThermistancesTab = uitab(app.TabGroup);
             app.ThermistancesTab.Title = 'Thermistances';
@@ -1339,6 +1401,7 @@ classdef main < matlab.apps.AppBase
 
             % Create SignauxTab
             app.SignauxTab = uitab(app.TabGroup2);
+            app.SignauxTab.Tooltip = {'Choix des signaux à afficher'};
             app.SignauxTab.Title = 'Signaux';
 
             % Create GridLayout13
@@ -1467,6 +1530,7 @@ classdef main < matlab.apps.AppBase
 
             % Create CommandeTab
             app.CommandeTab = uitab(app.TabGroup2);
+            app.CommandeTab.Tooltip = {'Menu de configuration de la simulation en mode commande'};
             app.CommandeTab.Title = 'Commande';
 
             % Create GridLayout7
@@ -1543,6 +1607,7 @@ classdef main < matlab.apps.AppBase
 
             % Create TempschelonsEditField
             app.TempschelonsEditField = uieditfield(app.GridLayout11, 'numeric');
+            app.TempschelonsEditField.Tooltip = {'Temps auquel la perturbation est déclenchée'};
             app.TempschelonsEditField.Layout.Row = 1;
             app.TempschelonsEditField.Layout.Column = 2;
 
@@ -1571,6 +1636,7 @@ classdef main < matlab.apps.AppBase
 
             % Create ConsigneTab
             app.ConsigneTab = uitab(app.TabGroup2);
+            app.ConsigneTab.Tooltip = {'Menu de configuration de la simulation en mode consigne'};
             app.ConsigneTab.Title = 'Consigne';
             app.ConsigneTab.Tag = 'start_consigne';
 
@@ -1676,6 +1742,7 @@ classdef main < matlab.apps.AppBase
 
             % Create TempschelonsEditField_4
             app.TempschelonsEditField_4 = uieditfield(app.GridLayout11_2, 'numeric');
+            app.TempschelonsEditField_4.Tooltip = {'Temps auquel la perturbation est déclenchée'};
             app.TempschelonsEditField_4.Layout.Row = 1;
             app.TempschelonsEditField_4.Layout.Column = 2;
 

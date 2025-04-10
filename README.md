@@ -31,7 +31,7 @@ python main.py
 
 ## Étapes pour excécuter l'interface simulink
 - Ouvrir le dossier dans matlab
-- Ouvrir le fichier Simulink_R2023a_serie.slx
+- Ouvrir le fichier Asservissement_2023a.slx
 - Exécuter le fichier main.m
 
 ## Contact
