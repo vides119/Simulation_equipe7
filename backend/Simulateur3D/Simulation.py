@@ -158,7 +158,7 @@ class Simulation():
     # proprietes temporelles
     @cached_property
     def dt(self):
-        return min(self.dx, self.dy)**2 / (self.facteur_temps*self.plaque.diffusivite)
+        return pow(1/self.dx**2 + 1/self.dy**2, -1) / (self.facteur_temps*self.plaque.diffusivite)
 
     @cached_property
     def iterations(self):
