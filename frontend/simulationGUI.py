@@ -191,7 +191,7 @@ class ScrollableBodyFrame(customtkinter.CTkScrollableFrame): # Corps de la page
 
                 CTkToolTip(
                     question_mark,
-                    message="Le facteur de temps ajuste la vitesse de simulation.\nUne valeur plus petite = simulation plus rapide.\n Sa valeur est entre 3 et 10, en dessous de 3 la simulation devient instable.",
+                    message="Le facteur de temps ajuste la vitesse de simulation.\nUne valeur plus petite = simulation plus rapide.\n Sa valeur est entre 4 et 10, en dessous de 4 la simulation devient instable.",
                     delay=0.2
                 )
 
