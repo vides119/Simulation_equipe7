@@ -19,7 +19,7 @@ from backend.Simulateur3D.Plaque import Plaque
 from backend.Simulateur3D.Composantes import Source, Thermistance
 from backend.Simulateur3D.Algorithme import diffusion_matricielle
 
-
+zZ
 # a implementer
 # traiter les cas limites, e.g. division par zero
 # acceleration cython
@@ -308,7 +308,8 @@ class Simulation():
         if self.afficher_plaque:
             if self.deux_dimensions:
                 ax = fig.add_subplot(1, ncols, (col_plq, col_plq))
-                self.surface_plaque = ax.imshow(self.temperature.T, cmap='coolwarm')
+                self.surface_plaque = ax.imshow(self.temperature.T, cmap='coolwarm',
+                                                origin='lower', extent=[0,self.plaque.longueur, 0, self.plaque.largeur])
             else:
                 ax = fig.add_subplot(1, ncols, (col_plq, col_plq), projection='3d')
                 self.surface_plaque = ax.plot_surface(*self.position_elements, self.temperature, cmap=self.cmap, antialiased=False)
