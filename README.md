@@ -5,7 +5,7 @@ Dépôt officiel du logiciel incluant l'interface pour la simulation3D et l'inte
 ## Étapes pour initialiser le dépot:
 - Installer le dépôt: `git clone https://github.com/Equipe7Design2/Simulation_equipe7.git`
 - Changer le dossier de travail pour celui du dépôt:`cd Simulation_equipe7`
-- Créer environnement virtuel: `python3 -m virtualenv venv`
+- Créer environnement virtuel: `python -m venv venv`
 - Activer l'environnement virtuel:
 	+ pour Windows: `./venv/Scripts/Activate.ps1`
 	+ pour Mac: `source ./venv/bin/activate`
