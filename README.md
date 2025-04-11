@@ -2,7 +2,7 @@
 
 Dépôt officiel du logiciel incluant l'interface pour la simulation3D et l'interface Simulink.
 
-## Étapes pour initialser le repo:
+## Étapes pour initialiser le dépot:
 - Installer le dépôt: `git clone https://github.com/Equipe7Design2/Simulation_equipe7.git`
 - Changer le dossier de travail pour celui du dépôt:`cd Simulation_equipe7`
 - Créer environnement virtuel: `python3 -m virtualenv venv`
@@ -12,9 +12,9 @@ Dépôt officiel du logiciel incluant l'interface pour la simulation3D et l'inte
 - Installer la version la plus récente de pip: `python -m pip install --upgrade pip`
 - Installer les requis: `pip install -r ./requirements.txt`
 
-Sanity test: Entrer dans l'interface ligne de commande python and exécuter
+Sanity test: Si nécéssaire, entrer dans l'interface ligne de commande python and exécuter
 
-```bash
+```python
 from backend.Simulateur3D.Plaque import Plaque
 print(Plaque())
 ```
@@ -30,7 +30,7 @@ python main.py
 ```
 
 ## Étapes pour excécuter l'interface simulink
-- Ouvrir le dossier dans matlab
+- Ouvrir le dépot dans Matlab
 - Ouvrir le fichier Asservissement_2023a.slx
 - Exécuter le fichier main.m
 

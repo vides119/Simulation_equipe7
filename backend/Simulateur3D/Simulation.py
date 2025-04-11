@@ -19,7 +19,6 @@ from backend.Simulateur3D.Plaque import Plaque
 from backend.Simulateur3D.Composantes import Source, Thermistance
 from backend.Simulateur3D.Algorithme import diffusion_matricielle
 
-zZ
 # a implementer
 # traiter les cas limites, e.g. division par zero
 # acceleration cython

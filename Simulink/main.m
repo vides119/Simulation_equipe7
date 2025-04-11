@@ -206,6 +206,7 @@ classdef main < matlab.apps.AppBase
             assignin("base", "T_ambiant", app.TempratureambiantedegCEditField.Value);
 
             Gain_controleur = app.GainglobalcontrleurEditField.Value;
+            assignin("base", "Gain_controleur", app.GainglobalcontrleurEditField.Value);
             assignin("base", "P", Gain_controleur*app.GainproportionnelEditField.Value);
             assignin("base", "I", Gain_controleur*app.GainintgraleEditField.Value);
             assignin("base", "D", Gain_controleur*app.GaindriveEditField.Value);
