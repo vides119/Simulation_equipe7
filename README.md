@@ -4,12 +4,12 @@ Dépôt officiel du logiciel incluant l'interface pour la simulation3D et l'inte
 
 ## Étapes pour initialser le repo:
 - Installer le dépôt: `git clone https://github.com/Equipe7Design2/Simulation3D.git`
-- Changer le dossier de travail pour celui du dépôt:`cd Simulation3D`
+- Changer le dossier de travail pour celui du dépôt:`cd Simulation_equipe7`
 - Créer environnement virtuel: `python -m venv venv`
 - Activer l'environnement virtuel:
 	+ pour Windows: `./venv/Scripts/Activate.ps1`
 	+ pour Mac: `./venv/bin/activate`
-- Installer la version la plus récente de pip: `pip install --upgrade pip`
+- Installer la version la plus récente de pip: `python.exe -m pip install --upgrade pip`
 - Installer les requis: `pip install -r ./requirements.txt`
 
 Sanity test: Entrer dans l'interface ligne de commande python and exécuter

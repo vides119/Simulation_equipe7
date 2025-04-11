@@ -1,1 +1,8 @@
 venv
+__pycache__
+fontend\__pycache__
+backend\__pycache__
+backend\prototype\__pycache__
+backend\Simulateur3D\__pycache__
+backend\.DS_Store
+.vscode/settings.json
