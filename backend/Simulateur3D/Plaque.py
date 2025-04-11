@@ -127,16 +127,16 @@ class Plaque():
         en_tete = col1 + col2 + col3
 
         str_plaque = (
-            f'{self.__class__.__name__:<{en_tete}}\n'
-            f'{'-'*en_tete}\n'
-            f'{'longueur':<{col1}}{self._longueur:^{col2}}{'[m]':<{col3}}\n'
-            f'{'largeur':<{col1}}{self._largeur:^{col2}}{'[m]':<{col3}}\n'
-            f'{'epaisseur':<{col1}}{self._epaisseur:^{col2}}{'[m]':<{col3}}\n'
-            f'{'chaleur specifique':<{col1}}{self._chaleur_specifique:^{col2}.2e}{'[J/kg•°C]':<{col3}}\n'
-            f'{'densite':<{col1}}{self.densite:^{col2}.2e}{'[kg/m³]':<{col3}}\n'
-            f'{'conductivite thermique':<{col1}}{self._conductivite_thermique:^{col2}.2e}{'[W/m•°C]':<{col3}}\n'
-            f'{'diffusivite thermique':<{col1}}{self.diffusivite:^{col2}.2e}{'[m²/s]':<{col3}}\n'
-            f'{'-'*en_tete}\n'
+            f"{self.__class__.__name__:<{en_tete}}\n"
+            f"{'-'*en_tete}\n"
+            f"{'longueur':<{col1}}{self._longueur:^{col2}}{'[m]':<{col3}}\n"
+            f"{'largeur':<{col1}}{self._largeur:^{col2}}{'[m]':<{col3}}\n"
+            f"{'epaisseur':<{col1}}{self._epaisseur:^{col2}}{'[m]':<{col3}}\n"
+            f"{'chaleur specifique':<{col1}}{self._chaleur_specifique:^{col2}.2e}{'[J/kg degC]':<{col3}}\n"
+            f"{'densite':<{col1}}{self.densite:^{col2}.2e}{'[kg/m^3]':<{col3}}\n"
+            f"{'conductivite thermique':<{col1}}{self._conductivite_thermique:^{col2}.2e}{'[W/m degC]':<{col3}}\n"
+            f"{'diffusivite thermique':<{col1}}{self.diffusivite:^{col2}.2e}{'[m^3/s]':<{col3}}\n"
+            f"{'-'*en_tete}\n"
             )
 
         return str_plaque

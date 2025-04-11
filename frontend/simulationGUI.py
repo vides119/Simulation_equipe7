@@ -516,7 +516,7 @@ class SimulationGUI(customtkinter.CTkToplevel):
 
         # Les options
         self.exporter_reponses = customtkinter.StringVar(value="on")
-        self.checkBox_exporter_reponses = customtkinter.CTkCheckBox(self.scrollable_body_frame.options_frame, text=f"\nExporter les réponses à l'échelon\n({Path.home() / "Documents" / "Simulation"})", command=self.exporter_reponses_callback, variable=self.exporter_reponses, onvalue="on", offvalue="off", fg_color="#3d7cf2")
+        self.checkBox_exporter_reponses = customtkinter.CTkCheckBox(self.scrollable_body_frame.options_frame, text=f"\nExporter les réponses à l'échelon\n({Path.home() / 'Documents' / 'Simulation'})", command=self.exporter_reponses_callback, variable=self.exporter_reponses, onvalue="on", offvalue="off", fg_color="#3d7cf2")
         self.checkBox_exporter_reponses.grid(row=1, column=0, padx=25, pady=10, sticky="w")
 
         self.en_kelvin = customtkinter.StringVar(value="off")
