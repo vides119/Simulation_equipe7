@@ -239,9 +239,9 @@ class homeApp(customtkinter.CTk):
                 if not self.port_ouvert: #  Pour eviter de bloquer si on reouvre la fenetre apres fermeture car le port serie est toujours ouvert
                     self.serial = serial.Serial(port, baud) # Pour eviter d'echouer la creation de la fenetre si erreur
                     self.port = port
-                    self.prototype = Prototype(serial=self.serial)
+                    self.prototype = None#Prototype(serial=self.serial)
                 if self.port != port: # Permet d'eviter dès de la 2e fois, que la fenetre s'ouvre alors qu'on selectionné le mauvais COM
-                    raise serial.SerialException
+                    pass#raise serial.SerialException
                 
                 # Creation de la fenetre
                 self.protoype_window = PrototypeGUI(self, self.prototype, self.current_theme, title, parametres, param_affichage)
